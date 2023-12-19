@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
@@ -32,6 +34,9 @@ class NotificationService {
         importance: Importance.max,
         priority: Priority.high,
         ticker: 'ticker',
+        timeoutAfter: null,
+        showWhen: true,
+        category: AndroidNotificationCategory.reminder,
       ),
       iOS: DarwinNotificationDetails(),
     );
@@ -79,13 +84,21 @@ class NotificationService {
 
   Future showIntervaledNotification(
       {int id = 2, String? title, String? body, String? payLoad}) async {
-    return notificationsPlugin.periodicallyShow(
-      id,
-      title,
-      body,
-      RepeatInterval.everyMinute,
-      await notificationDetails(),
-      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-    );
+    await notificationsPlugin.cancelAll();
+    final timer = Timer.periodic(const Duration(seconds: 2), (timer) {
+      showNotification(title: "HEHEHEHA");
+    });
+    Timer(const Duration(seconds: 10), () async {
+      await notificationsPlugin.cancelAll();
+      timer.cancel();
+    });
+    // return notificationsPlugin.periodicallyShow(
+    //   id,
+    //   title,
+    //   body,
+    //   RepeatInterval.everyMinute,
+    //   await notificationDetails(),
+    //   androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+    // );
   }
 }

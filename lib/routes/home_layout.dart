@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:local_notification_app_demo/Services/notifi_service.dart';
 import 'package:local_notification_app_demo/routes/alarm_item.dart';
 import 'package:local_notification_app_demo/routes/random_quote.dart';
 import 'package:local_notification_app_demo/routes/schedule_item.dart';
@@ -109,6 +110,14 @@ class _HomeLayoutState extends State<HomeLayout> {
               ? Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    FilledButton(
+                      onPressed: () {
+                        NotificationService().showIntervaledNotification();
+                      },
+                      child: Text(
+                        "SSSS",
+                      ),
+                    ),
                     const SizedBox(height: 128 - 32),
                     SvgPicture.asset(
                       'assets/images/no_data.svg',
