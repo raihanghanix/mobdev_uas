@@ -1,4 +1,6 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/data/latest_all.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
 class NotificationService {
   final FlutterLocalNotificationsPlugin notificationsPlugin =
@@ -24,14 +26,51 @@ class NotificationService {
 
   notificationDetails() {
     return const NotificationDetails(
-        android: AndroidNotificationDetails('channelId', 'channelName',
-            importance: Importance.max),
+        android: AndroidNotificationDetails(
+          'channelId',
+          'channelName',
+          importance: Importance.max,
+        ),
         iOS: DarwinNotificationDetails());
   }
 
   Future showNotification(
-      {int id = 0, String? title, String? body, String? payLoad}) async {
+      {int id = 1, String? title, String? body, String? payLoad}) async {
     return notificationsPlugin.show(
         id, title, body, await notificationDetails());
+  }
+
+  Future showScheduledNotification(
+      {int id = 2,
+      String formattedString = "",
+      String? title,
+      String? body,
+      String? payLoad}) async {
+    tz.initializeTimeZones();
+    tz.setLocalLocation(tz.getLocation("Asia/Jakarta"));
+
+    DateTime timestamp1 =
+        DateTime.parse(formattedString).add(const Duration(minutes: 0));
+    DateTime timestamp2 = DateTime.now().add(const Duration(hours: 7)).toUtc();
+    Duration difference = timestamp1.difference(timestamp2);
+    int differenceInSeconds = difference.inSeconds.abs();
+    print('$timestamp2 $timestamp1');
+    print('The difference in seconds is: $differenceInSeconds seconds');
+
+    return notificationsPlugin.zonedSchedule(
+        3,
+        title,
+        body,
+        tz.TZDateTime.now(tz.local).add(
+          Duration(seconds: differenceInSeconds),
+        ),
+        const NotificationDetails(
+          android: AndroidNotificationDetails(
+              'your channel id', 'your channel name',
+              channelDescription: 'your channel description'),
+        ),
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime,
+        androidAllowWhileIdle: true);
   }
 }
