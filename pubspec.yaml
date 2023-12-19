@@ -27,4 +27,15 @@ dev_dependencies:
   flutter_lints: ^2.0.0
 
 flutter:
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins-Regular.ttf
+        - asset: assets/fonts/Poppins-Bold.ttf
+          weight: 500
   uses-material-design: true
+  assets:
+    - assets/images/illustration.svg
+    - assets/images/logo.svg
+    - assets/images/no_data.svg
+    - .env
