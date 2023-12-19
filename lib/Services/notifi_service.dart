@@ -26,11 +26,15 @@ class NotificationService {
 
   notificationDetails() {
     return const NotificationDetails(
-        android: AndroidNotificationDetails('channelId', 'channelName',
-            importance: Importance.max,
-            priority: Priority.high,
-            ticker: 'ticker'),
-        iOS: DarwinNotificationDetails());
+      android: AndroidNotificationDetails(
+        'channelId',
+        'channelName',
+        importance: Importance.max,
+        priority: Priority.high,
+        ticker: 'ticker',
+      ),
+      iOS: DarwinNotificationDetails(),
+    );
   }
 
   Future showNotification(
@@ -70,6 +74,18 @@ class NotificationService {
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
+    );
+  }
+
+  Future showIntervaledNotification(
+      {int id = 2, String? title, String? body, String? payLoad}) async {
+    return notificationsPlugin.periodicallyShow(
+      id,
+      title,
+      body,
+      RepeatInterval.everyMinute,
+      await notificationDetails(),
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
     );
   }
 }

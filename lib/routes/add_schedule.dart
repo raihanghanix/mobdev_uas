@@ -115,16 +115,18 @@ class _AddScheduleState extends State<AddSchedule> {
           widget.details['id'],
         );
         await widget.getSchedule();
-        NotificationService().showScheduledNotification(
-            title: title.text,
-            body: desc.text,
-            formattedString: DateTime(
-              selectedDate.year,
-              selectedDate.month,
-              selectedDate.day,
-              selectedTime.hour,
-              selectedTime.minute,
-            ).toUtc().add(const Duration(hours: 7)).toString());
+        if (isActive) {
+          NotificationService().showScheduledNotification(
+              title: title.text,
+              body: desc.text,
+              formattedString: DateTime(
+                selectedDate.year,
+                selectedDate.month,
+                selectedDate.day,
+                selectedTime.hour,
+                selectedTime.minute,
+              ).toUtc().add(const Duration(hours: 7)).toString());
+        }
         Navigator.of(context).pop();
       } catch (e) {
         CustomSnackbar.danger(context, e.toString());
