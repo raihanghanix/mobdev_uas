@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:local_notification_app_demo/Services/notifi_service.dart';
 import 'package:local_notification_app_demo/routes/home.dart';
 import 'package:local_notification_app_demo/routes/login.dart';
 import 'package:local_notification_app_demo/utils/theme.dart';
@@ -10,8 +9,6 @@ import 'package:local_notification_app_demo/utils/file_controller.dart';
 import 'package:local_notification_app_demo/widgets/loading.dart';
 
 Future main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  NotificationService().initNotification();
   await dotenv.load(fileName: ".env");
   runApp(const MyApp());
 }
