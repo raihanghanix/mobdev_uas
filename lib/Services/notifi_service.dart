@@ -66,13 +66,7 @@ class NotificationService {
       title,
       body,
       tz.TZDateTime.now(tz.local).add(Duration(seconds: differenceInSeconds)),
-      const NotificationDetails(
-        android: AndroidNotificationDetails(
-          'your channel id',
-          'your channel name',
-          channelDescription: 'your channel description',
-        ),
-      ),
+      await notificationDetails(),
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
